@@ -1388,6 +1388,17 @@ built_ota_tools := \
 	$(call intermediates-dir-for,EXECUTABLES,updater,,,$(TARGET_PREFER_32_BIT))/updater
 $(BUILT_TARGET_FILES_PACKAGE): PRIVATE_OTA_TOOLS := $(built_ota_tools)
 
+uboot_ota := \
+    $(PRODUCT_OUT)/boot0_nand.fex \
+    $(PRODUCT_OUT)/boot0_sdcard.fex \
+    $(PRODUCT_OUT)/u-boot.fex \
+    $(PRODUCT_OUT)/toc0.fex \
+    $(PRODUCT_OUT)/toc1.fex \
+    $(PRODUCT_OUT)/boot-resource.fex \
+    $(PRODUCT_OUT)/env.fex
+
+$(BUILT_TARGET_FILES_PACKAGE): PRIVATE_OTA_UBOOT := $(uboot_ota)
+
 $(BUILT_TARGET_FILES_PACKAGE): PRIVATE_RECOVERY_API_VERSION := $(RECOVERY_API_VERSION)
 $(BUILT_TARGET_FILES_PACKAGE): PRIVATE_RECOVERY_FSTAB_VERSION := $(RECOVERY_FSTAB_VERSION)
 
@@ -1475,6 +1486,7 @@ endif
 	$(hide) mkdir -p $(zip_root)/OTA/bin
 	$(hide) $(ACP) $(INSTALLED_ANDROID_INFO_TXT_TARGET) $(zip_root)/OTA/
 	$(hide) $(ACP) $(PRIVATE_OTA_TOOLS) $(zip_root)/OTA/bin/
+	$(hide) $(ACP) -r $(PRIVATE_OTA_UBOOT) $(zip_root)/
 	@# Files that do not end up in any images, but are necessary to
 	@# build them.
 	$(hide) mkdir -p $(zip_root)/META
